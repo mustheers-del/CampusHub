@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+mport React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getProfile, updateProfile } from '../services/api';
 
@@ -108,7 +108,7 @@ export default function StudentProfile() {
       </div>
 
       {notification && (
-        <div className={`alert ${notification.type === 'error' ? 'alert-error' : 'alert-success'}`}>
+        <div className={alert ${notification.type === 'error' ? 'alert-error' : 'alert-success'}}>
           {notification.msg}
         </div>
       )}
@@ -123,7 +123,7 @@ export default function StudentProfile() {
               {user?.full_name || 'Account User'}
             </h2>
             <p style={{ fontSize: '0.875rem', color: 'var(--primary)', fontWeight: 600 }}>
-              {isAdmin ? 'System Administrator' : `${user?.course} (${user?.year || 'Student'})`}
+              {isAdmin ? 'System Administrator' : ${user?.course} (${user?.year || 'Student'})}
             </p>
           </div>
         </div>
