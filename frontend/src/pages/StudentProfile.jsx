@@ -1,4 +1,5 @@
-mport React, { useState, useEffect } from 'react';
+jsx
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getProfile, updateProfile } from '../services/api';
 
@@ -15,7 +16,13 @@ const COURSES = [
   'MBA'
 ];
 
-const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year', 'Postgraduate'];
+const YEARS = [
+  '1st Year',
+  '2nd Year',
+  '3rd Year',
+  '4th Year',
+  'Postgraduate'
+];
 
 export default function StudentProfile() {
   const { user, isAdmin, updateUser } = useAuth();
@@ -35,7 +42,9 @@ export default function StudentProfile() {
     async function loadProfile() {
       try {
         setLoading(true);
+
         const res = await getProfile();
+
         if (res.success && res.user) {
           setFormData({
             full_name: res.user.full_name || '',
@@ -50,16 +59,25 @@ export default function StudentProfile() {
         setLoading(false);
       }
     }
+
     loadProfile();
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const showNotification = (msg, type = 'success') => {
-    setNotification({ msg, type });
+    setNotification({
+      msg,
+      type
+    });
+
     setTimeout(() => {
       setNotification(null);
     }, 3000);
@@ -75,15 +93,23 @@ export default function StudentProfile() {
 
     try {
       setIsSubmitting(true);
+
       const res = await updateProfile(formData);
+
       if (res.success) {
         updateUser(res.user);
         showNotification('Profile updated successfully!');
       } else {
-        showNotification(res.message || 'Failed to update profile.', 'error');
+        showNotification(
+          res.message || 'Failed to update profile.',
+          'error'
+        );
       }
     } catch (err) {
-      showNotification(err.message || 'Error updating profile.', 'error');
+      showNotification(
+        err.message || 'Error updating profile.',
+        'error'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -103,49 +129,108 @@ export default function StudentProfile() {
       <div className="page-header">
         <div className="page-header-text">
           <h1>Account Profile Settings</h1>
-          <p>View and manage your personal account information.</p>
+          <p>
+            View and manage your personal account information.
+          </p>
         </div>
       </div>
 
       {notification && (
-        <div className={alert ${notification.type === 'error' ? 'alert-error' : 'alert-success'}}>
+        <div
+          className={`alert ${
+            notification.type === 'error'
+              ? 'alert-error'
+              : 'alert-success'
+          }`}
+        >
           {notification.msg}
         </div>
       )}
 
       <div className="card">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--border-color)' }}>
-          <div className="brand-icon" style={{ width: '60px', height: '60px', fontSize: '1.5rem' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem',
+            marginBottom: '1.5rem',
+            paddingBottom: '1.25rem',
+            borderBottom: '1px solid var(--border-color)'
+          }}
+        >
+          <div
+            className="brand-icon"
+            style={{
+              width: '60px',
+              height: '60px',
+              fontSize: '1.5rem'
+            }}
+          >
             {isAdmin ? '🛡️' : '👤'}
           </div>
+
           <div>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-navy)' }}>
+            <h2
+              style={{
+                fontSize: '1.25rem',
+                fontWeight: 700,
+                color: 'var(--text-navy)'
+              }}
+            >
               {user?.full_name || 'Account User'}
             </h2>
-            <p style={{ fontSize: '0.875rem', color: 'var(--primary)', fontWeight: 600 }}>
-              {isAdmin ? 'System Administrator' : ${user?.course} (${user?.year || 'Student'})}
+
+            <p
+              style={{
+                fontSize: '0.875rem',
+                color: 'var(--primary)',
+                fontWeight: 600
+              }}
+            >
+              {isAdmin
+                ? 'System Administrator'
+                : `${user?.course} (${user?.year || 'Student'})`}
             </p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Email Address (Login Identifier)</label>
-            <input 
+            <label className="form-label">
+              Email Address (Login Identifier)
+            </label>
+
+            <input
               type="email"
               className="form-input"
               value={user?.email || ''}
               disabled
-              style={{ backgroundColor: 'var(--bg-page)', cursor: 'not-allowed', color: 'var(--text-muted)' }}
+              style={{
+                backgroundColor: 'var(--bg-page)',
+                cursor: 'not-allowed',
+                color: 'var(--text-muted)'
+              }}
             />
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-light)', marginTop: '0.25rem', display: 'block' }}>
-              Email address cannot be changed directly as it acts as your unique login key.
+
+            <span
+              style={{
+                fontSize: '0.75rem',
+                color: 'var(--text-light)',
+                marginTop: '0.25rem',
+                display: 'block'
+              }}
+            >
+              Email address cannot be changed directly as it acts
+              as your unique login key.
             </span>
           </div>
 
           <div className="form-group">
-            <label className="form-label">Full Name *</label>
-            <input 
+            <label className="form-label">
+              Full Name *
+            </label>
+
+            <input
               type="text"
               name="full_name"
               className="form-input"
@@ -157,8 +242,11 @@ export default function StudentProfile() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Phone Number</label>
-            <input 
+            <label className="form-label">
+              Phone Number
+            </label>
+
+            <input
               type="tel"
               name="phone"
               className="form-input"
@@ -172,31 +260,41 @@ export default function StudentProfile() {
           {!isAdmin && (
             <div className="form-row">
               <div className="form-group">
-                <label className="form-label">Course / Program *</label>
-                <select 
+                <label className="form-label">
+                  Course / Program *
+                </label>
+
+                <select
                   name="course"
                   className="form-select"
                   value={formData.course}
                   onChange={handleChange}
                   required
                 >
-                  {COURSES.map(c => (
-                    <option key={c} value={c}>{c}</option>
+                  {COURSES.map((course) => (
+                    <option key={course} value={course}>
+                      {course}
+                    </option>
                   ))}
                 </select>
               </div>
 
               <div className="form-group">
-                <label className="form-label">Academic Year *</label>
-                <select 
+                <label className="form-label">
+                  Academic Year *
+                </label>
+
+                <select
                   name="year"
                   className="form-select"
                   value={formData.year}
                   onChange={handleChange}
                   required
                 >
-                  {YEARS.map(y => (
-                    <option key={y} value={y}>{y}</option>
+                  {YEARS.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -204,13 +302,15 @@ export default function StudentProfile() {
           )}
 
           {!isAdmin && (
-            <button 
-              type="submit" 
-              className="btn btn-primary" 
+            <button
+              type="submit"
+              className="btn btn-primary"
               style={{ marginTop: '0.5rem' }}
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Saving Changes...' : 'Save Profile Changes'}
+              {isSubmitting
+                ? 'Saving Changes...'
+                : 'Save Profile Changes'}
             </button>
           )}
         </form>
