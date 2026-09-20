@@ -1,4 +1,4 @@
-jsx
+
 import React, { useState, useEffect } from 'react';
 import ConfirmModal from '../components/ConfirmModal';
 import { getMyRegistrations, deleteRegistration } from '../services/api';
