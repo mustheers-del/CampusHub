@@ -1,31 +1,31 @@
-const mysql = require('mysql2/promise');
+const { Sequelize } = require('sequelize');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'campushub',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
+// Initialize Sequelize with your database credentials
+const sequelize = new Sequelize(
+  process.env.DB_NAME || 'campushub',
+  process.env.DB_USER || 'root',
+  process.env.DB_PASSWORD || '',
+  {
+    host: process.env.DB_HOST || 'localhost',
+    dialect: 'mysql',
+    logging: false
+  }
+);
 
 // Helper function to test DB connection on server startup
 async function testConnection() {
   try {
-    const connection = await pool.getConnection();
-    console.log('✅ Connected to MySQL Database successfully:', process.env.DB_NAME || 'campushub');
-    connection.release();
+    await sequelize.authenticate();
+    console.log('✅ Connected to MySQL Database successfully using Sequelize:', process.env.DB_NAME || 'campushub');
   } catch (error) {
-    console.error('❌ Error connecting to MySQL Database:', error.message);
-    console.error('👉 Please make sure MySQL service is running and credentials in backend/.env are correct.');
+    console.error('❌ Error connecting to MySQL Database with Sequelize:', error.message);
   }
 }
 
 module.exports = {
-  pool,
+  sequelize,
   testConnection
 };
